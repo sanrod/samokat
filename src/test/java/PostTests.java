@@ -3,7 +3,9 @@ import org.json.simple.parser.JSONParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.FileReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 public class PostTests extends SuiteBase{
     @Test
@@ -17,7 +19,7 @@ public class PostTests extends SuiteBase{
 
         Assertions.assertEquals(MailPage.Sender.getText(), testData.SenderEmail);
         Assertions.assertTrue(MailPage.Text.getText().contains(testData.TextForCheck));
-        Assertions.assertEquals(MailPage.Theme.getText(), testData.TextForCheck);
+        Assertions.assertEquals(MailPage.Theme.getText(), testData.SenderTheme);
 
         Driver.back();
         makeUnreadAllMessages();
@@ -30,11 +32,10 @@ public class PostTests extends SuiteBase{
         try
         {
             TestData testData = new TestData();
-            FileReader reader = new FileReader("TestData.json");
-
+            InputStreamReader in = new InputStreamReader(new FileInputStream("TestData.json"), StandardCharsets.UTF_8);
 
             JSONParser jsonParser = new JSONParser();
-            JSONObject jsonObject =  (JSONObject) jsonParser.parse(reader);
+            JSONObject jsonObject =  (JSONObject) jsonParser.parse(in);
 
             testData.UserEmail = (String) jsonObject.get("UserEmail");
             testData.UserPass = (String) jsonObject.get("UserPass");
