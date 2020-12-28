@@ -1,0 +1,16 @@
+WebElementExtCollection.java
+ WebElementExtCollection
+MailPage.java
+ MailPage
+Browser.java
+ Browser
+AuthorizationPage.java
+ AuthorizationPage
+PageBase.java
+ PageBase
+IncomingMailPage.java
+ IncomingMailPage
+YandexMainPage.java
+ YandexMainPage
+WebElementExt.java
+ WebElementExt
