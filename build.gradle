@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+}
+compileJava.options.encoding = 'UTF-8'
+tasks.withType(JavaCompile)
+        {
+            options.encoding = 'UTF-8'
+        }
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    // https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.0.0-alpha-7'
+    // https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-chrome-driver
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-chrome-driver', version: '4.0.0-alpha-7'
+    compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
+}
+
+test {
+    useJUnitPlatform()
+}
