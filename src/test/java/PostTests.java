@@ -11,15 +11,15 @@ public class PostTests extends SuiteBase{
     @Test
     public void CheckingEmail()
     {
-        TestData testData = getTestData();
+        var testData = getTestData();
         Assertions.assertNotNull(testData);
 
         login(testData.UserEmail, testData.UserPass);
         findMessage(testData);
 
-        Assertions.assertEquals(MailPage.Sender.getText(), testData.SenderEmail);
-        Assertions.assertTrue(MailPage.Text.getText().contains(testData.TextForCheck));
-        Assertions.assertEquals(MailPage.Theme.getText(), testData.SenderTheme);
+        Assertions.assertEquals(MailPage.Sender.getText(), testData.SenderEmail, "Sender email is not equal");
+        Assertions.assertTrue(MailPage.Text.getText().contains(testData.TextForCheck), "Message text not contain sequence");
+        Assertions.assertEquals(MailPage.Theme.getText(), testData.SenderTheme, "Sender theme is not equals");
 
         Driver.back();
         makeUnreadAllMessages();
@@ -31,12 +31,11 @@ public class PostTests extends SuiteBase{
     {
         try
         {
-            TestData testData = new TestData();
-            InputStreamReader in = new InputStreamReader(new FileInputStream("TestData.json"), StandardCharsets.UTF_8);
 
-            JSONParser jsonParser = new JSONParser();
-            JSONObject jsonObject =  (JSONObject) jsonParser.parse(in);
+            var in = new InputStreamReader(new FileInputStream("TestData.json"), StandardCharsets.UTF_8);
+            var jsonObject =  (JSONObject) new JSONParser().parse(in);
 
+            var testData = new TestData();
             testData.UserEmail = (String) jsonObject.get("UserEmail");
             testData.UserPass = (String) jsonObject.get("UserPass");
             testData.SenderName = (String) jsonObject.get("SenderName");
@@ -61,6 +60,7 @@ public class PostTests extends SuiteBase{
         AuthorizationPage.Enter.click();
         AuthorizationPage.Pass.sendKeys(pass);
         AuthorizationPage.Enter.click();
+        Assertions.assertTrue(AuthorizationPage.LoginSuccess.exists(5), "login is failed");
         if (AuthorizationPage.NotNow.exists(5))
         {
             AuthorizationPage.NotNow.click();
@@ -71,7 +71,7 @@ public class PostTests extends SuiteBase{
     {
         var senders = IncomingMailPage.UnreadMessagesSender.convertToListCollection();
         var themes = IncomingMailPage.UnreadMessagesThemes.convertToListCollection();
-        for (int i=0; i<senders.stream().count(); i++)
+        for (int i = 0; i< (long) senders.size(); i++)
         {
             var text1 = senders.get(i).getText();
             var text2 = themes.get(i).getText();

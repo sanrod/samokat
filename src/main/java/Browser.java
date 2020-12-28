@@ -1,5 +1,4 @@
 import org.openqa.selenium.By;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -7,7 +6,6 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.LinkedHashMap;
@@ -58,7 +56,7 @@ public class Browser {
                 .withTimeout(Duration.ofSeconds(timeoutInSec))
                 .pollingEvery(Duration.ofMillis(200))
                 .ignoring(NoSuchElementException.class);
-        WebElement element = null;
+        WebElement element;
         try {
             element = fluentWait.until(ExpectedConditions.elementToBeClickable(By.ByXPath.xpath(xpath)));
         } catch (Exception e) {
@@ -68,24 +66,22 @@ public class Browser {
         return element;
     }
 
-    public List<WebElement> findElements(String xpath)
+    public List<WebElement> findElements(String xpath, int timeoutInSec)
     {
         FluentWait<WebDriver> fluentWait = new FluentWait<>(_driver)
-                .withTimeout(Duration.ofSeconds(30))
+                .withTimeout(Duration.ofSeconds(timeoutInSec))
                 .pollingEvery(Duration.ofMillis(200))
                 .ignoring(NoSuchElementException.class);
-        var elements = fluentWait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.ByXPath.xpath(xpath)));
-        return elements;
+        return fluentWait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.ByXPath.xpath(xpath)));
     }
 
-    public List<WebElement> findHiddenElements(String xpath)
+    public List<WebElement> findHiddenElements(String xpath, int timeoutInSec)
     {
         FluentWait<WebDriver> fluentWait = new FluentWait<>(_driver)
-                .withTimeout(Duration.ofSeconds(30))
+                .withTimeout(Duration.ofSeconds(timeoutInSec))
                 .pollingEvery(Duration.ofMillis(200))
                 .ignoring(NoSuchElementException.class);
-        var elements = fluentWait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.ByXPath.xpath(xpath)));
-        return elements;
+        return fluentWait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.ByXPath.xpath(xpath)));
     }
 
     public void back()

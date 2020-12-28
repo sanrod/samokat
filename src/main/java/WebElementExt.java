@@ -6,6 +6,7 @@ public class WebElementExt {
     private final String _xpath;
     private WebElement _element;
     private boolean _reloadObject = true;
+    private final  int _timeoutInSec = 10;
 
     public WebElementExt(Browser driver, Boolean isHidden, String xpath) {
         _driver = driver;
@@ -21,28 +22,35 @@ public class WebElementExt {
     public Boolean exists(int timeoutInSec)
     {
         CheckCondition(timeoutInSec);
-        if (_element != null)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return _element != null;
     }
 
     public void click() {
-        CheckCondition(30);
+        CheckCondition(_timeoutInSec);
+        checkNull();
         _element.click();
+    }
+    private void checkNull()
+    {
+        if(_element == null)
+        {
+            try {
+                throw new Exception(String.format("Element with xpath = (%s) is not found", _xpath));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public String getText() {
-        CheckCondition(30);
+        CheckCondition(_timeoutInSec);
+        checkNull();
         return _element.getText();
     }
 
     public void sendKeys(String text) {
-        CheckCondition(30);
+        CheckCondition(_timeoutInSec);
+        checkNull();
         _element.sendKeys(text);
     }
 
